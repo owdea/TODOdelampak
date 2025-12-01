@@ -7,7 +7,7 @@ export default function AuthButtons () {
     const login = async () => {
         await supabase.auth.signInWithOAuth({
             provider: "google",
-            options: { redirectTo: window.location.origin }
+            options: { redirectTo: import.meta.env.VITE_REDIRECT_URL }
         })
     }
 
