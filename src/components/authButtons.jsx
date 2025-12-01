@@ -28,7 +28,7 @@ export default function AuthButtons () {
             {session ? (
                 <>
                     <button className="px-6 py-3 border border-white bg-gray text-white rounded-xl">
-                        Přihlášen jako: {session.user.email}
+                        Buzíček s emailem: {session.user.email}
                     </button>
 
                     <button
