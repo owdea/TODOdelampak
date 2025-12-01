@@ -1,4 +1,4 @@
-import {supabase} from "../utils/supabase"
+import supabase from "../utils/supabase.js";
 import {useState, useEffect} from "react";
 
 export default function useAuth() {

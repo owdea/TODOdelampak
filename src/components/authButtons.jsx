@@ -1,5 +1,5 @@
 import useAuth from "../hooks/useAuth.js";
-import {supabase} from "../utils/supabase.js";
+import supabase from "../utils/supabase.js";
 
 export default function AuthButtons () {
     const {session, loading } = useAuth();
