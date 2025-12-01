@@ -1,13 +1,15 @@
 import './App.css'
-import GoogleAuthButton from "./components/googleAuthButton.jsx";
+import useAuth from "./hooks/useAuth.js";
+import AuthButtons from "./components/authButtons.jsx";
 
 function App() {
 
-  return (
+    return (
     <div className={"h-screen flex justify-center items-center flex-col"}>
       <h1 className={""}>Working on it</h1>
-      <h1 className={""}>Like really..</h1>
-        <GoogleAuthButton/>
+      <h1 className={"pb-2"}>See?</h1>
+      <span></span>
+        <AuthButtons/>
     </div>
   )
 }
