@@ -9,6 +9,7 @@ export default function AuthButtons () {
             provider: "google",
             options: { redirectTo: import.meta.env.VITE_REDIRECT_URL }
         })
+        console.log("redirectTo:", import.meta.env.VITE_REDIRECT_URL)
     }
 
     const logout = async () => {
