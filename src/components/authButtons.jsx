@@ -1,35 +1,33 @@
 import useAuth from "../hooks/useAuth.js";
 import supabase from "../utils/supabase.js";
 
-export default function AuthButtons () {
-    const {session, loading } = useAuth();
+export default function AuthButtons() {
+    const { session, loading } = useAuth();
 
     const login = async () => {
         await supabase.auth.signInWithOAuth({
             provider: "google",
-            options: { redirectTo: import.meta.env.VITE_REDIRECT_URL }
-        })
-        console.log("redirectTo:", import.meta.env.VITE_REDIRECT_URL)
-    }
+            options: {
+                redirectTo: import.meta.env.VITE_REDIRECT_URL,
+            },
+        });
+    };
 
     const logout = async () => {
-        await supabase.auth.signOut()
-    }
+        await supabase.auth.signOut();
+    };
 
     if (loading) {
         return <span>Načítání…</span>;
     }
 
-    if (session) {
-        console.log(session.user)
-    }
     return (
         <div className="flex flex-col items-center gap-4">
             {session ? (
                 <>
-                    <button className="px-6 py-3 border border-white bg-gray text-white rounded-xl">
-                        Buzíček s emailem: {session.user.email}
-                    </button>
+                    <div className="px-6 py-3 border border-white bg-gray text-white rounded-xl">
+                        Přihlášen jako: {session.user.email}
+                    </div>
 
                     <button
                         onClick={logout}

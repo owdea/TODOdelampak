@@ -1,6 +1,5 @@
 import './App.css'
 import AuthButtons from "./components/authButtons.jsx";
-import UserInviteForm from "./components/userInviteForm.jsx";
 
 function App() {
 
@@ -11,7 +10,6 @@ function App() {
       <h1 className={"pb-2"}>See?</h1>
       <span></span>
       <AuthButtons/>
-      <UserInviteForm/>
     </div>
   )
 }
