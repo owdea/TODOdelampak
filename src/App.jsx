@@ -1,25 +1,67 @@
+import { useEffect, useState } from "react";
+import supabase from "./utils/supabase.js";
 import './App.css'
-import AuthButtons from "./components/authButtons.jsx";
-import CategoryCreateForm from "./components/category/categoryCreateForm.jsx";
-import CategoryList from "./components/category/categoryList.jsx";
-import TodoCreateForm from "./components/todo/todoCategoryForm.jsx";
-import TodoList from "./components/todo/todoList.jsx";
 
-function App() {
+import CategoryCreateForm from "./components/category/CategoryCreateForm.jsx";
+import CategoryList from "./components/category/CategoryList.jsx";
+import TodoCreateForm from "./components/todo/todoCategoryForm.jsx";
+import TodoList from "./components/todo/TodoList.jsx";
+
+export default function App() {
+    const [categories, setCategories] = useState([]);
+    const [todos, setTodos] = useState([]);
+
+    const loadCategories = async () => {
+        const { data } = await supabase
+            .from("categories")
+            .select("*")
+            .order("created_at");
+
+        setCategories(data || []);
+    };
+
+    const loadTodos = async () => {
+        const { data } = await supabase
+            .from("todos")
+            .select(`
+        id,
+        title,
+        description,
+        due_at,
+        completed,
+        todo_categories (
+          categories (id, name, color)
+        ),
+        todo_assignees (
+          users (id, email, raw_user_meta_data)
+        )
+      `)
+            .order("created_at", { ascending: false });
+
+        setTodos(data || []);
+    };
+
+    useEffect(() => {
+        loadCategories();
+        loadTodos();
+    }, []);
 
     return (
-    <div className={"h-screen flex justify-center items-center flex-col"}>
-      <h1 className={""}>Working on it</h1>
-      <h1 className={""}>Like really..</h1>
-      <h1 className={"pb-2"}>See?</h1>
-      <span></span>
-      <AuthButtons/>
-        <CategoryCreateForm/>
-        <CategoryList />
-        <TodoCreateForm/>
-        <TodoList/>
-    </div>
-  )
-}
+        <div className="max-w-3xl mx-auto p-6 text-white">
+            <h1 className="text-2xl font-bold mb-6">TODO</h1>
 
-export default App
+            {/* KATEGORIE */}
+            <section className="mb-10">
+                <CategoryCreateForm onCreated={loadCategories} />
+                <CategoryList categories={categories} />
+            </section>
+
+            {/* TODO */}
+            <section>
+                <TodoCreateForm categories={categories}
+                                onCreated={loadTodos} />
+                <TodoList todos={todos} />
+            </section>
+        </div>
+    );
+}

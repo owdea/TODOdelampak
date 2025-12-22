@@ -3,73 +3,42 @@ import supabase from "../../utils/supabase.js";
 
 export default function CategoryCreateForm({ onCreated }) {
     const [name, setName] = useState("");
-    const [color, setColor] = useState("#3b82f6"); // default blue
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const [color, setColor] = useState("#3b82f6");
 
-    const createCategory = async () => {
-        if (!name.trim()) {
-            setError("Název kategorie je povinný");
-            return;
-        }
+    const create = async () => {
+        if (!name.trim()) return;
 
-        setLoading(true);
-        setError(null);
-
-        const { data, error } = await supabase
-            .from("categories")
-            .insert({
-                name: name.trim(),
-                color,
-            })
-            .select()
-            .single();
-
-        setLoading(false);
-
-        if (error) {
-            setError(error.message);
-            return;
-        }
+        await supabase.from("categories").insert({
+            name: name.trim(),
+            color,
+        });
 
         setName("");
         setColor("#3b82f6");
 
-        if (onCreated) {
-            onCreated(data);
-        }
+        if (onCreated) onCreated();
     };
 
     return (
-        <div>
-            <h3>Přidat kategorii</h3>
-
+        <div className="flex gap-2 mb-4">
             <input
-                type="text"
-                placeholder="Název kategorie"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                placeholder="Nová kategorie"
+                className="p-2 bg-gray-800 border rounded"
             />
 
-            <div>
-                <label>
-                    Barva kategorie
-                </label>
-
-                <input
-                    type="color"
-                    value={color}
-                    onChange={(e) => setColor(e.target.value)}
-                />
-            </div>
-
-            {error && <span>{error}</span>}
+            <input
+                type="color"
+                value={color}
+                onChange={(e) => setColor(e.target.value)}
+            />
 
             <button
-                onClick={createCategory}
-                disabled={loading}
+                onClick={create}
+                className="px-3 bg-blue-500 rounded"
             >
-                {loading ? "Ukládám…" : "Přidat kategorii"}
+                Přidat
             </button>
         </div>
     );

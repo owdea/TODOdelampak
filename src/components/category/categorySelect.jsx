@@ -1,22 +1,8 @@
-import { useEffect, useState } from "react";
-import supabase from "../../utils/supabase.js";
-
-export default function CategorySelect({ selectedIds, onChange }) {
-    const [categories, setCategories] = useState([]);
-
-    useEffect(() => {
-        const load = async () => {
-            const { data } = await supabase
-                .from("categories")
-                .select("*")
-                .order("created_at");
-
-            setCategories(data || []);
-        };
-
-        load();
-    }, []);
-
+export default function CategorySelect({
+                                           categories,
+                                           selectedIds,
+                                           onChange,
+                                       }) {
     const toggleCategory = (id) => {
         if (selectedIds.includes(id)) {
             onChange(selectedIds.filter((c) => c !== id));
@@ -24,6 +10,14 @@ export default function CategorySelect({ selectedIds, onChange }) {
             onChange([...selectedIds, id]);
         }
     };
+
+    if (!categories.length) {
+        return (
+            <div className="text-sm text-gray-400">
+                Žádné kategorie
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col gap-2">
