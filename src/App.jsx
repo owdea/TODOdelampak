@@ -2,6 +2,8 @@ import './App.css'
 import AuthButtons from "./components/authButtons.jsx";
 import CategoryCreateForm from "./components/category/categoryCreateForm.jsx";
 import CategoryList from "./components/category/categoryList.jsx";
+import TodoCreateForm from "./components/todo/todoCategoryForm.jsx";
+import TodoList from "./components/todo/todoList.jsx";
 
 function App() {
 
@@ -14,6 +16,8 @@ function App() {
       <AuthButtons/>
         <CategoryCreateForm/>
         <CategoryList />
+        <TodoCreateForm/>
+        <TodoList/>
     </div>
   )
 }

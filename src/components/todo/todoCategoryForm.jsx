@@ -1,7 +1,7 @@
 import { useState } from "react";
 import supabase from "../../utils/supabase.js";
-import CategorySelect from "../../components/categories/CategorySelect.jsx";
-import AssigneeSelect from "../components/assignees/AssigneeSelect.jsx";
+import CategorySelect from "../category/categorySelect.jsx";
+import AssigneeSelect from "../assignees/assigneeSelect.jsx";
 
 export default function TodoCreateForm({ onCreated }) {
     // základ
