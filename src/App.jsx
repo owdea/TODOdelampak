@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import supabase from "./utils/supabase.js";
 import './App.css'
 
-import CategoryCreateForm from "./components/category/CategoryCreateForm.jsx";
-import CategoryList from "./components/category/CategoryList.jsx";
+import CategoryCreateForm from "./components/category/categoryCreateForm.jsx";
+import CategoryList from "./components/category/categoryList.jsx";
 import TodoCreateForm from "./components/todo/todoCategoryForm.jsx";
-import TodoList from "./components/todo/TodoList.jsx";
+import TodoList from "./components/todo/todoList.jsx";
 
 export default function App() {
     const [categories, setCategories] = useState([]);
