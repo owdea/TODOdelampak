@@ -5,50 +5,54 @@ export default function AssigneeSelect({ selectedIds, onChange }) {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
-        const load = async () => {
-            const { data } = await supabase
-                .from("users")
-                .select("id, email, raw_user_meta_data");
+        const loadUsers = async () => {
+            const { data, error } = await supabase
+                .from("users_public") // 👈 viz níže
+                .select("id, name, avatar_url");
 
-            setUsers(data || []);
+            if (!error) setUsers(data);
         };
 
-        load();
+        loadUsers();
     }, []);
 
     const toggleUser = (id) => {
-        if (selectedIds.includes(id)) {
-            onChange(selectedIds.filter((u) => u !== id));
-        } else {
-            onChange([...selectedIds, id]);
-        }
+        onChange(
+            selectedIds.includes(id)
+                ? selectedIds.filter((u) => u !== id)
+                : [...selectedIds, id]
+        );
     };
 
     return (
-        <div className="flex flex-col gap-2">
-            <span className="text-sm text-gray-300">Řešitelé</span>
+        <div className="flex flex-wrap gap-3">
+            {users.map((user) => {
+                const selected = selectedIds.includes(user.id);
 
-            <div className="flex flex-wrap gap-2">
-                {users.map((u) => {
-                    const name =
-                        u.raw_user_meta_data?.full_name || u.email;
-
-                    return (
-                        <button
-                            key={u.id}
-                            type="button"
-                            onClick={() => toggleUser(u.id)}
-                            className={`px-3 py-1 rounded border text-sm ${
-                                selectedIds.includes(u.id)
-                                    ? "border-white text-white"
-                                    : "border-gray-600 text-gray-400"
-                            }`}
-                        >
-                            {name}
-                        </button>
-                    );
-                })}
-            </div>
+                return (
+                    <button
+                        key={user.id}
+                        onClick={() => toggleUser(user.id)}
+                        type="button"
+                        className={`flex items-center gap-2 px-3 py-2 rounded-full border transition
+                            ${
+                            selected
+                                ? "bg-blue-600 border-blue-500"
+                                : "bg-gray-800 border-gray-700 hover:bg-gray-700"
+                        }
+                        `}
+                    >
+                        <img
+                            src={user.avatar_url}
+                            alt={user.name}
+                            className="w-6 h-6 rounded-full"
+                        />
+                        <span className="text-sm text-white">
+                            {user.name}
+                        </span>
+                    </button>
+                );
+            })}
         </div>
     );
 }
