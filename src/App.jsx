@@ -21,24 +21,33 @@ export default function App() {
     };
 
     const loadTodos = async () => {
-        const { data } = await supabase
+        const { data, error } = await supabase
             .from("todos")
             .select(`
-        id,
-        title,
-        description,
-        due_at,
-        completed,
-        todo_categories (
-          categories (id, name, color)
-        ),
-        todo_assignees (
-          users (id, email, raw_user_meta_data)
+      id,
+      title,
+      due_at,
+      completed,
+      todo_categories (
+        categories (
+          id,
+          name,
+          color
         )
-      `)
+      ),
+      todo_assignees (
+        user_id,
+        users_public (
+          avatar_url,
+          name
+        )
+      )
+    `)
             .order("created_at", { ascending: false });
 
-        setTodos(data || []);
+        if (!error) {
+            setTodos(data || []);
+        }
     };
 
     useEffect(() => {
